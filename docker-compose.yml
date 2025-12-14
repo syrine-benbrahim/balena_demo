@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  capteur:
+    build: ./capteur
+    restart: always
+
+  dashboard:
+    build: ./dashboard
+    restart: always
+    ports:
+      - "80:80"

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard IoT</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .metric {
+            background: white;
+            color: #333;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            min-width: 200px;
+        }
+        .value {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        .alert {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌡️ Dashboard IoT - balenaCloud</h1>
+    
+    <div class="metric">
+        <div>Température</div>
+        <div class="value" id="temp">--°C</div>
+    </div>
+    
+    <div class="metric">
+        <div>Humidité</div>
+        <div class="value" id="hum">--%</div>
+    </div>
+    
+    <div id="alert" class="alert" style="display:none;">
+        🚨 ALERTE TEMPÉRATURE!
+    </div>
+    
+    <script>
+        function refresh() {
+            fetch('/api/data')
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('temp').textContent = data.temperature + '°C';
+                    document.getElementById('hum').textContent = data.humidite + '%';
+                    
+                    if (data.alerte) {
+                        document.getElementById('alert').style.display = 'block';
+                    } else {
+                        document.getElementById('alert').style.display = 'none';
+                    }
+                });
+        }
+        
+        refresh();
+        setInterval(refresh, 3000);
+    </script>
+</body>
+</html>
